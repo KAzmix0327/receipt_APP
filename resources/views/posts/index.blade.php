@@ -1,5 +1,12 @@
 <x-app-layout>
+    <div class="flex flex-wrap">
+        <a href="{{ route('posts.create') }}"
+            class="text-5xl bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            新規登録
+        </a>
+    </div>
     <div class="container max-w-7xl mx-auto px-4 md:px-12 pb-3 mt-3">
+
 
         <x-flash-message :message="session('notice')" />
 
@@ -7,9 +14,19 @@
             @foreach ($posts as $post)
                 <article class="w-full px-4 md:w-1/2 text-xl text-gray-800 leading-normal">
                     <a href="{{ route('posts.show', $post) }}">
-                        <h2 class="font-bold font-sans break-normal text-gray-900 pt-6 pb-1 text-3xl md:text-4xl">
-                            {{ $post->title }}</h2>
-                        <h3>{{ $post->user->name }}</h3>
+                        <div class="flex flex-row-reverse justify-between">
+                            <h2
+                                class="inline font-bold font-sans break-normal text-gray-900 pt-6 pb-1 text-3xl md:text-4xl">
+                                {{ $post->user->name }}</h2>
+                            <a href="{{ route('posts.edit', $post) }}"
+                                class=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                変更
+                            </a>
+                        </div>
+                    </a>
+
+                    <a href="{{ route('posts.show', $post) }}">
+                        <h3>{{ $post->price }}円</h3>
                         <p class="text-sm mb-2 md:text-base font-normal text-gray-600">
                             <span
                                 class="text-red-400 font-bold">{{ date('Y-m-d H:i:s', strtotime('-1 day')) < $post->created_at ? 'NEW' : '' }}</span>

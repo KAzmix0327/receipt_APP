@@ -36,8 +36,14 @@
                     </label>
                     <input type="file" name="image" class="border-gray-300">
                 </div>
+
+                <div class="flex justify-around">
                 <input type="submit" value="登録"
-                    class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    class="block w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                <div class="w-20"></div>
+                <a href="{{ route('posts.index') }}"
+                class="block text-center w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">キャンセル</a> 
+                </div>
         </form>
     </div>
 </x-app-layout>

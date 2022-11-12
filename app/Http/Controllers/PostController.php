@@ -78,9 +78,10 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::find($id);
+        $post = Post::with(['user'])->find($id);
+        $comments = $post->comments()->latest()->get()->load(['user']);
 
-        return view('posts.show', compact('post'));
+        return view('posts.show', compact('post', 'comments'));
     }
 
     /**
@@ -106,7 +107,6 @@ class PostController extends Controller
     public function update(PostRequest $request, $id)
     {
         $post = Post::find($id);
-
         if ($request->user()->cannot('update', $post)) {
             return redirect()->route('posts.show', $post)
                 ->withErrors('自分の領収書以外は更新できません');
@@ -115,7 +115,7 @@ class PostController extends Controller
         $file = $request->file('image');
         if ($file) {
             $delete_file_path = 'images/posts/' . $post->image;
-            $delete_file_path = $post->image_path;
+            $post->image = self::createFileName($file);
         }
         $post->fill($request->all());
 
