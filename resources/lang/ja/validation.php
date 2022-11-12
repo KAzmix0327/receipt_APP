@@ -127,5 +127,10 @@ return [
             'rule-name' => 'custom-message',
         ],
     ],
-    'attributes'           => [],
+    'attributes'           => [
+        'name' => '名前',
+        'price' => '金額',
+        'body' => 'コメント',
+        'image' => '画像',
+    ],
 ];
