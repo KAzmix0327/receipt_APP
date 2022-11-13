@@ -31,13 +31,13 @@
                 </form>
             @endcan
         </div> --}}
-        {{-- @auth
-            <hr class="my-4">
 
+        @auth
+            <hr class="my-4">
             <div class="flex justify-end">
                 <a href="{{ route('posts.comments.create', $post) }}" class="bg-indigo-400 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block">コメント登録</a>
             </div>
-        @endauth --}}
+        @endauth
 
         <section class="font-sans break-normal text-gray-900 ">
             @foreach ($comments as $comment)
@@ -46,7 +46,7 @@
                     <span class="text-sm">{{ $comment->created_at }}</span>
                     <p>{!! nl2br(e($comment->body)) !!}</p>
                     
-                    {{-- <div class="flex justify-end text-center">
+                    <div class="flex justify-end text-center">
                         @can('update', $comment)
                             <a href="{{ route('posts.comments.edit', [$post, $comment]) }}"
                                 class="text-sm bg-green-400 hover:bg-green-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline w-20 mr-2">編集</a>
@@ -59,10 +59,18 @@
                                     class="text-sm bg-red-400 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline w-20">
                             </form>
                         @endcan
-                    </div> --}}
+                    </div>
                 </div>
                 <hr>
             @endforeach
+            
+            @if ($post->entry->status == 1)
+            <form action="{{ route('posts.entries.store', $post) }}" method="post">
+                @csrf
+                <input type="submit" value="承認" class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" > 
+            <div class="h-5"></div>
+            </form>
+            @endif
             <a href="{{ route('posts.index') }}"
                 class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">戻る</a> 
         </section>
