@@ -37,6 +37,6 @@ class EntryController extends Controller
     {
         $entry->delete();
 
-        return redirect()->route('posts.show', $post);
+        return redirect()->route('posts.edit', $post);
     }
 }

@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Entry extends Model
 {
     use HasFactory;
+    
+    // ステータス
+    const STATUS_ENTRY = 0;
+    const STATUS_APPROVAL = 1;
+    const STATUS_REJECT = 2;
+    const STATUS_LIST = [
+        self::STATUS_ENTRY => 'エントリー中',
+        self::STATUS_APPROVAL => '承認',
+        self::STATUS_REJECT => '却下',
+    ];
 
     protected $fillable = [
         "user_id",
@@ -18,5 +28,10 @@ class Entry extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getStatusValueAttribute()
+    {
+        return self::STATUS_LIST[$this->status];
     }
 }
