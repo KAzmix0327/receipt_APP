@@ -1,10 +1,14 @@
 <x-app-layout>
+    <x-slot name="header">
     <div class="flex flex-wrap">
         <a href="{{ route('posts.create') }}"
-            class="text-5xl bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            + 新規登録
+            class="text-5xl bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            新規登録
         </a>
+        
     </div>
+    </x-slot>
+    
 
     <div class="container max-w-7xl mx-auto px-4 md:px-12 pb-3 mt-3">
 

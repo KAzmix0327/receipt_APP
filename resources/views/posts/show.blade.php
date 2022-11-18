@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="container lg:w-3/4 md:w-4/5 w-11/12 mx-auto my-8 px-8 py-4 bg-white shadow-md">
+    <div class="my-8 px-8 py-4 bg-white shadow-md">
 
         <x-flash-message :message="session('notice')" />
         <x-validation-errors :errors="$errors" />
@@ -7,6 +7,15 @@
         <article class="mb-2">
             <h2 class="font-bold font-sans break-normal text-gray-900 pt-6 pb-1 text-3xl md:text-4xl">{{ $post->title }}
             </h2>
+            @if (isset($post->entry))
+                @if ($post->entry->status == 1)
+                    <button class="px-2 py-1 text-red-500 border border-red-500 font-semibold rounded hover:bg-red-100">承認</button>
+                @else
+                    <button class="px-2 py-1 text-indigo-500 border border-indigo-500 font-semibold rounded hover:bg-indigo-100">却下</button>
+                @endif
+            @else
+                <button class="px-2 py-1 text-yellow-500 border border-yellow-500 font-semibold rounded hover:bg-yellow-100">未承認</button>
+            @endif
             <h3>{{ $post->user->name }}</h3>
             <h3>{{ $post->price }}円</h3>
             <p class="text-sm mb-2 md:text-base font-normal text-gray-600">
@@ -16,6 +25,15 @@
             </p>
             <img src="{{ $post->image_url }}" alt="" class="mb-4">
             <p class="text-gray-700 text-base">{!! nl2br(e($post->body)) !!}</p>
+
+                    @auth
+            <hr class="my-4">
+            <div class="flex justify-end">
+                <a href="{{ route('posts.comments.create', $post) }}"
+                    class="bg-indigo-400 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block">コメント登録</a>
+            </div>
+        @endauth
+
         </article>
         {{-- <div class="flex flex-row text-center my-4">
             @can('update', $post)
@@ -32,20 +50,13 @@
             @endcan
         </div> --}}
 
-        @auth
-            <hr class="my-4">
-            <div class="flex justify-end">
-                <a href="{{ route('posts.comments.create', $post) }}" class="bg-indigo-400 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block">コメント登録</a>
-            </div>
-        @endauth
-
         <section class="font-sans break-normal text-gray-900 ">
             @foreach ($comments as $comment)
                 <div class="my-2">
                     <span class="font-bold mr-3">{{ $comment->user->name }}</span>
                     <span class="text-sm">{{ $comment->created_at }}</span>
                     <p>{!! nl2br(e($comment->body)) !!}</p>
-                    
+
                     <div class="flex justify-end text-center">
                         @can('update', $comment)
                             <a href="{{ route('posts.comments.edit', [$post, $comment]) }}"
@@ -63,16 +74,17 @@
                 </div>
                 <hr>
             @endforeach
-            
-            @if ($post->entry->status == 1)
-            <form action="{{ route('posts.entries.store', $post) }}" method="post">
-                @csrf
-                <input type="submit" value="承認" class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" > 
-            <div class="h-5"></div>
-            </form>
-            @endif
-            <a href="{{ route('posts.index') }}"
-                class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">戻る</a> 
-        </section>
+
+            @can('admin')
+                <form action="{{ route('posts.entries.store', $post) }}" method="post">
+                    @csrf
+                    <input type="submit" value="承認"
+                        class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    <div class="h-5"></div>
+                </form>
+            @endcan
     </div>
+
+                <a href="{{ route('posts.index') }}"
+                class="block text-center w-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">戻る</a>
 </x-app-layout>

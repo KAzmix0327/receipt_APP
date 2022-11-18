@@ -15,6 +15,20 @@ class Post extends Model
         'price',
         'body',
     ];
+
+    protected $appends = [
+        'user_name',
+        'image_url',
+    ];
+
+    protected $hidden = [
+        'image',
+        'user_id',
+        'updated_at',
+        'user',
+    ];
+
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -22,7 +36,12 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->latest();
+    }
+
+    public function entry()
+    {
+        return $this->hasOne(Entry::class);
     }
 
     public function getImageUrlAttribute()
@@ -33,5 +52,10 @@ class Post extends Model
     public function getImagePathAttribute()
     {
         return 'images/posts/' . $this->image;
+    }
+// API認証
+    public function getUserNameAttribute()
+    {
+        return $this->user->name;
     }
 }

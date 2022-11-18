@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="container lg:w-1/2 md:w-4/5 w-11/12 mx-auto mt-8 px-8 bg-white shadow-md">
+    <div class="mt-8 px-8 bg-white shadow-md">
         <h2 class="text-center text-lg font-bold pt-6 tracking-widest">コメント登録</h2>
 
         <x-validation-errors :errors="$errors" />
@@ -15,7 +15,9 @@
                     required placeholder="本文">{{ old('body') }}</textarea>
             </div>
             <input type="submit" value="登録"
-                class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                class="w-full bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         </form>
     </div>
+    <a href="{{ route('posts.show', $post) }}"
+                class="block text-center w-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">戻る</a>
 </x-app-layout>
