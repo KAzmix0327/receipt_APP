@@ -15,6 +15,7 @@ use App\Http\Controllers\EntryController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', [App\Http\Controllers\PostController::class, 'index']);
 
 // ルーティングの変更
 Route::get('/', [PostController::class, 'index'])
