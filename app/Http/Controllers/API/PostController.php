@@ -18,6 +18,11 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        return $this->authorizeResource(Post::class, 'post');
+    }
     public function index(Request $request)
     {
         $posts = Post::latest()->paginate($request->per_page);
@@ -34,9 +39,8 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $post = new Post($request->all());
-        // $post->user_id = $request->user()->id;
-        // $post->user_id = $request->user()->id;
-        $post->user_id = 1;
+        $post->user_id = $request->user()->id;
+        // $post->user_id = 1;
         $file = $request->file('image');
         $post->image = self::createFilename($file);
 
@@ -170,8 +174,8 @@ class PostController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             // トランザクション終了(失敗)
-        logger($e->getMessage());
-        return response(status: 500);
+            logger($e->getMessage());
+            return response(status: 500);
         }
 
         // return redirect()->route('posts.index')

@@ -1,10 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-    <div class="flex flex-wrap">
+    <div class="flex flex-nowrap">
         <a href="{{ route('posts.create') }}"
-            class="text-5xl bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            class="text-2xl text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             新規登録
         </a>
+<form id="form5" action="自分のサイトのURL">
+<input id="sbox5"  id="s" name="s" type="text" placeholder="キーワードを入力" />
+
+</form>
     </div>
     </x-slot>
     

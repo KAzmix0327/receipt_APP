@@ -16,13 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::apiResource('posts', PostController::class)
+    ->middleware('auth:api')
     ->names('api.posts');
 
 Route::apiResource('posts.comments', CommentController::class)
+    ->middleware('auth:api')
     ->only(['store', 'show', 'update', 'destroy'])
     ->names('api.posts.comments');

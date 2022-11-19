@@ -15,6 +15,12 @@ class CommentController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        return $this->authorizeResource(Comment::class, 'comment');
+    }
+
     // public function index(Post $post)
     // {
     //     //
@@ -30,8 +36,8 @@ class CommentController extends Controller
     public function store(Request $request, Post $post)
     {
         $comment = new Comment($request->all());
-        // $comment->user_id = $request->user()->id;
-        $comment->user_id = 1;
+        $comment->user_id = $request->user()->id;
+        // $comment->user_id = 1;
         $comment->post_id = $post->id;
 
         try {
