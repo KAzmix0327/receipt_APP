@@ -137,12 +137,12 @@ class PostController extends Controller
                 }
 
                 // 画像削除
-                if (!Storage::delete($delete_file_path)) {
-                    //アップロードした画像を削除する
-                    Storage::delete($post->image_path);
-                    //例外を投げてロールバックさせる
-                    throw new \Exception('画像ファイルの削除に失敗しました。');
-                }
+                // if (!Storage::delete($delete_file_path)) {
+                //     //アップロードした画像を削除する
+                //     Storage::delete($post->image_path);
+                //     //例外を投げてロールバックさせる
+                //     throw new \Exception('画像ファイルの削除に失敗しました。');
+                // }
             }
 
             // トランザクション終了(成功)
