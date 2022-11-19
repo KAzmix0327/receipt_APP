@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -108,7 +109,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PostRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $post = Post::find($id);
         if ($request->user()->cannot('update', $post)) {
@@ -148,6 +149,7 @@ class PostController extends Controller
             // トランザクション終了(成功)
             DB::commit();
         } catch (\Exception $e) {
+        dd($request, $id, $e);
             // トランザクション終了(失敗)
             DB::rollback();
             return back()->withInput()->withErrors($e->getMessage());
