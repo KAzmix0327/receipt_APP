@@ -5,7 +5,6 @@
             class="text-5xl bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             新規登録
         </a>
-        
     </div>
     </x-slot>
     
