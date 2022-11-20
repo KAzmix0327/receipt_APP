@@ -1,0 +1,101 @@
+<x-app-layout>
+    <div class="my-8 px-8 py-4 bg-white shadow-md">
+
+        <x-flash-message :message="session('notice')" />
+        <x-validation-errors :errors="$errors" />
+
+        <article class="mb-2">
+            <h2 class="font-bold font-sans break-normal text-gray-900 pt-6 pb-1 text-3xl md:text-4xl">{{ $post->title }}
+            </h2>
+            @if (isset($post->entry))
+                @if ($post->entry->status == 1)
+                    <button class="px-2 py-1 text-red-500 border border-red-500 font-semibold rounded hover:bg-red-100">承認</button>
+                @else
+                    <button class="px-2 py-1 text-indigo-500 border border-indigo-500 font-semibold rounded hover:bg-indigo-100">却下</button>
+                @endif
+            @else
+                <button class="px-2 py-1 text-yellow-500 border border-yellow-500 font-semibold rounded hover:bg-yellow-100">未承認</button>
+            @endif
+            <h3>{{ $post->user->name }}</h3>
+            <h3>{{ $post->price }}円</h3>
+            <p class="text-sm mb-2 md:text-base font-normal text-gray-600">
+                <span
+                    class="text-red-400 font-bold">{{ date('Y-m-d H:i:s', strtotime('-1 day')) < $post->created_at ? 'NEW' : '' }}</span>
+                {{ $post->created_at }}
+            </p>
+            <img src="{{ $post->image_url }}" alt="" class="mb-4">
+            <p class="text-gray-700 text-base">{!! nl2br(e($post->body)) !!}</p>
+
+                    @auth
+            <hr class="my-4">
+            <div class="flex justify-end">
+                <a href="{{ route('posts.comments.create', $post) }}"
+                    class="bg-indigo-400 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block">コメント登録</a>
+            </div>
+        @endauth
+
+        </article>
+        {{-- <div class="flex flex-row text-center my-4">
+            @can('update', $post)
+                <a href="{{ route('posts.edit', $post) }}"
+                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2">編集</a>
+            @endcan
+            @can('delete', $post)
+                <form action="{{ route('posts.destroy', $post) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <input type="submit" value="削除" onclick="if(!confirm('削除しますか？')){return false};"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20">
+                </form>
+            @endcan
+        </div> --}}
+
+        <section class="font-sans break-normal text-gray-900 ">
+            @foreach ($comments as $comment)
+                <div class="my-2">
+                    <span class="font-bold mr-3">{{ $comment->user->name }}</span>
+                    <span class="text-sm">{{ $comment->created_at }}</span>
+                    <p>{!! nl2br(e($comment->body)) !!}</p>
+
+                    <div class="flex justify-end text-center">
+                        @can('update', $comment)
+                            <a href="{{ route('posts.comments.edit', [$post, $comment]) }}"
+                                class="text-sm bg-green-400 hover:bg-green-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline w-20 mr-2">編集</a>
+                        @endcan
+                        @can('delete', $comment)
+                            <form action="{{ route('posts.comments.destroy', [$post, $comment]) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" value="削除" onclick="if(!confirm('削除しますか？')){return false};"
+                                    class="text-sm bg-red-400 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline w-20">
+                            </form>
+                        @endcan
+                    </div>
+                </div>
+                <hr>
+            @endforeach
+
+            @can('admin')
+                @if(isset($post->entry))
+                    @if( !($post->entry->status == 1))
+                        <form action="{{ route('posts.entries.store', $post) }}" method="post">
+                            @csrf
+                            <input type="submit" value="承認"
+                                class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <div class="h-5"></div>
+                        </form>
+                    @endif
+                @else
+                    <form action="{{ route('posts.entries.store', $post) }}" method="post">
+                        @csrf
+                        <input type="submit" value="承認"
+                            class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <div class="h-5"></div>
+                    </form>
+                @endif
+            @endcan
+    </div>
+
+                <a href="{{ route('posts.index') }}"
+                class="block text-center w-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">戻る</a>
+</x-app-layout>

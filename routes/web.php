@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\EntryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,13 +15,32 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', [App\Http\Controllers\PostController::class, 'index']);
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// ルーティングの変更
+Route::get('/', [PostController::class, 'index'])
+    ->name('root')
+    ->middleware('auth');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+
+Route::resource('posts', PostController::class)
+    ->only(['create', 'store', 'edit', 'update', 'destroy'])
+    ->middleware('auth');
+
+Route::resource('posts', PostController::class)
+    ->only(['show', 'index']);
+
+
+Route::resource('posts.comments', CommentController::class)
+    ->only(['create', 'store', 'edit', 'update', 'destroy'])
+    ->middleware('auth');
+    
 require __DIR__.'/auth.php';
+
+Route::resource('posts.entries', EntryController::class)
+    ->only(['store', 'destroy'])
+    ->middleware('can:admin');

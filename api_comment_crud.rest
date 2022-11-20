@@ -1,0 +1,47 @@
+@host = localhost
+
+### posts.comments.show
+# @prompt post_id
+# @prompt comment_id
+GET /api/posts/{{ post_id }}/comments/{{ comment_id }} HTTP/1.1
+Host: {{ host }}
+Accept: application/json
+
+
+
+### posts.comments.store
+# @prompt post_id
+POST /api/posts/{{ post_id }}/comments HTTP/1.1
+Host: {{ host }}
+Accept: application/json
+Authorization: Bearer {{ token }}
+Content-Type: application/json
+
+{
+    "body": "test_comment"
+}
+
+
+
+### posts.comments.update
+# @prompt post_id
+# @prompt comment_id
+PUT /api/posts/{{ post_id }}/comments/{{ comment_id }} HTTP/1.1
+Host: {{ host }}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{ token }}
+
+{
+    "body": "update_comment"
+}
+
+
+
+### posts.comments.destroy
+# @prompt post_id
+# @prompt comment_id
+DELETE /api/posts/{{ post_id }}/comments/{{ comment_id }} HTTP/1.1
+Host: {{ host }}
+Accept: application/json
+Authorization: Bearer {{ token }}
