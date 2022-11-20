@@ -76,14 +76,16 @@
             @endforeach
 
             @can('admin')
-            @if( !($post->entry->status == 1))
-                <form action="{{ route('posts.entries.store', $post) }}" method="post">
-                    @csrf
-                    <input type="submit" value="承認"
-                        class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    <div class="h-5"></div>
-                </form>
-            @endif
+                @if(isset($post->entry))
+                    @if( !($post->entry->status == 1))
+                        <form action="{{ route('posts.entries.store', $post) }}" method="post">
+                            @csrf
+                            <input type="submit" value="承認"
+                                class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <div class="h-5"></div>
+                        </form>
+                    @endif
+                @endif
             @endcan
     </div>
 
